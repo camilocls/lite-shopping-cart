@@ -7,8 +7,7 @@ export default new Vuex.Store({
   state: {
     categories: [],
     products: [],
-    cart: [],
-    filterProducts: [],
+    productsInCart: [],
     currentCategorie: null
   },
   mutations: {
@@ -23,6 +22,18 @@ export default new Vuex.Store({
     },
     SET_CURRENT_CATEGORIE(state, id) {
       state.currentCategorie = id;
+    },
+    INCREMENT_QUANTITY_PRODUCT_CART(state, id) {
+      const product = state.productsInCart.find(item => item.id === id);
+      product.quantity++;
+    },
+    ADD_PRODUCT_CART(state, id) {
+      state.productsInCart.push({ id, quantity: 1 });
+    },
+    DECREMENT_STOCK(state, id) {
+      const product = state.products.find(item => item.id === id);
+      if (product.quantity < 1) return false;
+      product.quantity--;
     }
   },
   actions: {
@@ -52,8 +63,27 @@ export default new Vuex.Store({
           commit("SET_CATEGORIES", data.categories);
         });
     },
-    setCategorie({ commit }, payload) {
-      commit("SET_CURRENT_CATEGORIE", payload.id);
+    setCategorie({ commit }, categorie) {
+      commit("SET_CURRENT_CATEGORIE", categorie.id);
+    },
+    addProductCart({ state, commit, dispatch }, { id }) {
+      const productInCart = state.productsInCart.find(
+        productCart => productCart.id === id
+      );
+      if (productInCart) {
+        commit("INCREMENT_QUANTITY_PRODUCT_CART", id);
+      } else {
+        commit("ADD_PRODUCT_CART", id);
+      }
+
+      dispatch({
+        type: "saveShoppingCartOnClient",
+        products: state.productsInCart
+      });
+      commit("DECREMENT_STOCK", id);
+    },
+    saveShoppingCartOnClient(storage, { products }) {
+      localStorage.setItem("shoppingCart", JSON.stringify(products));
     }
   },
   getters: {
