@@ -1,22 +1,27 @@
 <template>
   <div class="shopping-cart">
     <h2 class="shopping-cart__title">Shopping Cart</h2>
-
     <div class="items">
-      <ProductCart />
-      <ProductCart />
-      <ProductCart />
-      <ProductCart />
+      <ProductCart
+        v-for="product in products"
+        :key="product.id"
+        v-bind="product"
+      />
     </div>
-
   </div>
 </template>
 
 <script>
 import ProductCart from "./ProductCart.vue";
+const locaStorageProducts = JSON.parse(localStorage.getItem("shoppingCart"));
 
 export default {
   name: "ShoppingCart",
+  data() {
+    return {
+      products: locaStorageProducts
+    };
+  },
   components: {
     ProductCart
   }

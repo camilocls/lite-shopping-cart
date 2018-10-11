@@ -22,6 +22,14 @@ export default {
   props: {},
   components: {
     Counter
+  },
+  methods: {
+    addProduct(id) {
+      this.$store.dispatch({
+        type: "addProductCart",
+        id: id
+      });
+    }
   }
 };
 </script>
