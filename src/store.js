@@ -7,7 +7,9 @@ export default new Vuex.Store({
   state: {
     categories: [],
     products: [],
-    cart: []
+    cart: [],
+    filterProducts: [],
+    currentCategorie: null
   },
   mutations: {
     SET_PRODUCTS(state, products) {
@@ -18,6 +20,9 @@ export default new Vuex.Store({
     },
     SET_CAR(state, products) {
       state.cart = products;
+    },
+    SET_CURRENT_CATEGORIE(state, id) {
+      state.currentCategorie = id;
     }
   },
   actions: {
@@ -46,6 +51,16 @@ export default new Vuex.Store({
         .then(data => {
           commit("SET_CATEGORIES", data.categories);
         });
+    },
+    setCategorie({ commit }, payload) {
+      commit("SET_CURRENT_CATEGORIE", payload.id);
+    }
+  },
+  getters: {
+    productsByCategorie: state => categorieId => {
+      return state.products.filter(
+        product => product.sublevel_id === categorieId
+      );
     }
   }
 });

@@ -22,5 +22,13 @@ export default {
 <style scoped>
 .product-list {
   width: auto;
+  display: flex;
+  flex-flow: row wrap;
+}
+.product {
+  flex: 0 0 46%;
+}
+.product:nth-child(2n) {
+  margin-left: 8%;
 }
 </style>
