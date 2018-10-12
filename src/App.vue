@@ -1,12 +1,15 @@
 <template>
   <div id="app">
-    <Header/>
     <div class="container">
       <div class="side-left box-shadow">
-        <Categories :categories="categories" />
+        <div class="container-filters">
+          <Categories :categories="categories" />
+          <FilterProducts />
+        </div>
         <ProductList :products="getProducts" />
       </div>
       <div class="side-right box-shadow">
+        <Header/>
         <ShoppingCart />
       </div>
     </div>
@@ -19,6 +22,7 @@ import Header from "./components/Header";
 import ShoppingCart from "./components/ShoppingCart";
 import ProductList from "./components/ProductList";
 import Categories from "./components/Categories";
+import FilterProducts from "./components/FilterProducts";
 
 export default {
   name: "app",
@@ -26,7 +30,8 @@ export default {
     Header,
     ProductList,
     ShoppingCart,
-    Categories
+    Categories,
+    FilterProducts
   },
   mounted() {
     this.$store.dispatch("setCategories");
@@ -61,12 +66,18 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  flex-flow: row wrap;
 }
-.categories {
+.container-filters {
   flex: 0 0 30%;
 }
 .product-list {
   flex: 0 0 67%;
+}
+.filter {
+  width: 100%;
+  flex: 1 0 100%;
+  margin: 0 0 40px;
 }
 .box-shadow {
   box-shadow: 0 2px 14px 1px rgba(0, 0, 0, 0.1);

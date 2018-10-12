@@ -1,11 +1,12 @@
 <template>
   <div class="filter">
+    WIP: Filter Here
   </div>
 </template>
 
 <script>
 export default {
-  name: "Filter",
+  name: "FilterProducts",
   props: {}
 };
 </script>
