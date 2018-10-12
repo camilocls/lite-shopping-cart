@@ -5,11 +5,11 @@
     </div>
     <div class="product-cart__details">
       <h3 class="product-cart__title">{{product.name}}</h3>
-      <span class="product-cart__price">{{product.price}}</span>
+      <span class="product-cart__price">${{product.price|setCurrency}}</span>
       <button @click="deleteProduct(product.id)" class="product-cart__delete">Delete</button>
     </div>
     <div class="product-cart__amount">
-      <Counter :id="product.quantity" />
+      <Counter :id="product.id" :counter="product.quantity" />
     </div>
   </div>
 </template>

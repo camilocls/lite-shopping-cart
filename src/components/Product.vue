@@ -6,7 +6,7 @@
     </div>
     <div class="product__details">
       <h3 class="product__title product__detail">{{product.name}}</h3>
-      <div class="product__price product__detail">{{product.price}}</div>
+      <div class="product__price product__detail">${{product.price|setCurrency}}</div>
       <div class="product__quantity product__detail"><span>Stock:</span> {{product.quantity}}</div>
 
       <div class="product__actions">
