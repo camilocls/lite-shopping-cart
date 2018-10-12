@@ -1,7 +1,7 @@
 <template>
   <div class="product">
     <div class="product__image">
-      <img src="https://picsum.photos/150/90/?random">
+      <img :src="product.image">
       <div v-if="!product.available" class="product__sold-out product__detail">Sold Out</div>
     </div>
     <div class="product__details">
