@@ -1,4 +1,6 @@
-# lite-ecommerce
+# Lite Shopping
+
+![alt text](screenshot.png)
 
 ## Project setup
 ```
@@ -24,3 +26,9 @@ yarn run test
 ```
 yarn run lint
 ```
+
+### TODOS:
+- Tests
+- Add Filter component
+- Add documentation
+- Add some animations
