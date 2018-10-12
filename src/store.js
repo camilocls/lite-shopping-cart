@@ -1,6 +1,5 @@
 import Vue from "vue";
 import Vuex from "vuex";
-const locaStorageProducts = JSON.parse(localStorage.getItem("shoppingCart"));
 
 Vue.use(Vuex);
 
@@ -8,7 +7,8 @@ export default new Vuex.Store({
   state: {
     categories: [],
     products: [],
-    productsInCart: locaStorageProducts || [],
+    productsInCart: [],
+    checkout: false,
     currentCategorie: null
   },
   mutations: {
@@ -18,56 +18,85 @@ export default new Vuex.Store({
     SET_CATEGORIES(state, categories) {
       state.categories = categories;
     },
-    SET_CAR(state, products) {
-      state.cart = products;
-    },
     SET_CURRENT_CATEGORIE(state, id) {
       state.currentCategorie = id;
     },
-    INCREMENT_QUANTITY_PRODUCT_CART(state, id) {
+    INCREMENT_QUANTITY_PRODUCT_CART(state, { id, quantity }) {
       const product = state.productsInCart.find(item => item.id === id);
-      product.quantity++;
+      product.quantity += quantity;
+    },
+    DECREMENT_QUANTITY_PRODUCT_CART(state, { id, quantity }) {
+      const product = state.productsInCart.find(item => item.id === id);
+      product.quantity -= quantity;
     },
     ADD_PRODUCT_CART(state, id) {
       state.productsInCart.push({ id, quantity: 1 });
     },
-    DECREMENT_ITEM_STOCK(state, id) {
+    DECREMENT_STOCK_ITEM(state, { id, quantity }) {
       const product = state.products.find(item => item.id === id);
       if (product.quantity < 1) return false;
-      product.quantity--;
+      product.quantity -= quantity;
     },
-    INCREMENT_ITEM_STOCK(state, id) {
+    INCREMENT_STOCK_ITEM(state, { id, quantity }) {
       const product = state.products.find(item => item.id === id);
-      if (product.quantity < 1) return false;
-      product.quantity++;
+      product.quantity += quantity;
+    },
+    SET_PRODUCTS_IN_CAR(state, products) {
+      state.productsInCart = products;
+    },
+    SET_CHECKOUT(state, checkout) {
+      state.checkout = checkout;
     }
   },
   actions: {
     setProducts({ commit }) {
-      fetch("./data/products.json")
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error("Oops! This data can not be found.");
-          }
-        })
-        .then(data => {
-          commit("SET_PRODUCTS", data.products);
-        });
+      return new Promise(resolve => {
+        fetch("./data/products.json")
+          .then(response => {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error("Oops! This data can not be found.");
+            }
+          })
+          .then(data => {
+            commit("SET_PRODUCTS", data.products);
+            resolve();
+          });
+      });
     },
     setCategories({ commit }) {
-      fetch("./data/categories.json")
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error("Oops! This data can not be found.");
+      return new Promise(resolve => {
+        fetch("./data/categories.json")
+          .then(response => {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error("Oops! This data can not be found.");
+            }
+          })
+          .then(data => {
+            commit("SET_CATEGORIES", data.categories);
+            resolve();
+          });
+      });
+    },
+    setProductsIncartLocalStorage({ state, commit }) {
+      const localProducts = localStorage.getItem("shoppingCart")
+        ? JSON.parse(localStorage.getItem("shoppingCart"))
+        : [];
+      const products = [...state.products];
+
+      if (!localStorage.length) return false;
+
+      localProducts.forEach(localProduct => {
+        products.find((product, index) => {
+          if (product.id === localProduct.id) {
+            products[index].quantity -= localProduct.quantity;
           }
-        })
-        .then(data => {
-          commit("SET_CATEGORIES", data.categories);
         });
+      });
+      commit("SET_PRODUCTS_IN_CAR", localProducts);
     },
     setCategorie({ commit }, categorie) {
       commit("SET_CURRENT_CATEGORIE", categorie.id);
@@ -77,22 +106,48 @@ export default new Vuex.Store({
         productCart => productCart.id === id
       );
       if (productInCart) {
-        commit("INCREMENT_QUANTITY_PRODUCT_CART", id);
+        commit("INCREMENT_QUANTITY_PRODUCT_CART", { id, quantity: 1 });
       } else {
         commit("ADD_PRODUCT_CART", id);
       }
 
-      dispatch({
-        type: "saveShoppingCartOnClient",
-        products: state.productsInCart
+      commit("SET_CHECKOUT", false);
+      dispatch("saveShoppingCartOnClient", state.productsInCart);
+      commit("DECREMENT_STOCK_ITEM", { id, quantity: 1 });
+    },
+    decrementProductCart({ state, commit, dispatch }, { id, quantity }) {
+      commit("DECREMENT_QUANTITY_PRODUCT_CART", { id, quantity });
+      commit("INCREMENT_STOCK_ITEM", { id, quantity });
+      dispatch("saveShoppingCartOnClient", state.productsInCart);
+    },
+    incrementProductCart({ state, commit, dispatch }, { id, quantity }) {
+      commit("INCREMENT_QUANTITY_PRODUCT_CART", { id, quantity });
+      commit("DECREMENT_STOCK_ITEM", { id, quantity });
+      dispatch("saveShoppingCartOnClient", state.productsInCart);
+    },
+    deleteProduct({ state, commit, dispatch }, { id }) {
+      const productCart = state.productsInCart.find(
+        product => product.id === id
+      );
+      const productsInCart = state.productsInCart.filter(
+        product => product.id != id
+      );
+
+      commit("INCREMENT_STOCK_ITEM", {
+        id: productCart.id,
+        quantity: productCart.quantity
       });
-      commit("DECREMENT_ITEM_STOCK", id);
+      commit("SET_PRODUCTS_IN_CAR", productsInCart);
+      dispatch("saveShoppingCartOnClient", productsInCart);
     },
-    saveShoppingCartOnClient(storage, { products }) {
-      localStorage.setItem("shoppingCart", JSON.stringify(products));
+    saveShoppingCartOnClient(storage, products) {
+      const data = JSON.stringify(products);
+      localStorage.setItem("shoppingCart", data);
     },
-    deleteProduct({ commit }, { id }) {
-      commit, id;
+    setCheckout({ commit, dispatch }, checkout) {
+      dispatch("saveShoppingCartOnClient", []);
+      commit("SET_PRODUCTS_IN_CAR", []);
+      commit("SET_CHECKOUT", checkout);
     }
   },
   getters: {
@@ -102,8 +157,6 @@ export default new Vuex.Store({
       );
     },
     productsInCart: state => {
-      if (!state.products.length || !state.productsInCart.length) return false;
-
       return state.productsInCart.map(productCart => {
         const product = state.products.find(
           product => product.id === productCart.id
@@ -117,6 +170,15 @@ export default new Vuex.Store({
           image: product.image
         };
       });
+    },
+    totalPriceCart: state => {
+      return state.productsInCart.reduce((total, productCart) => {
+        const product = state.products.find(
+          product => product.id === productCart.id
+        );
+        const totalProduct = product.price * productCart.quantity;
+        return total + totalProduct;
+      }, 0);
     }
   }
 });

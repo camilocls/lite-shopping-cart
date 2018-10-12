@@ -29,8 +29,10 @@ export default {
     Categories
   },
   mounted() {
-    this.$store.dispatch("setProducts");
     this.$store.dispatch("setCategories");
+    this.$store.dispatch("setProducts").then(() => {
+      this.$store.dispatch("setProductsIncartLocalStorage");
+    });
   },
   computed: {
     ...mapState(["categories", "currentCategorie"]),
