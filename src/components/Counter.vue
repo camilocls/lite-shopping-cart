@@ -9,22 +9,25 @@
 <script>
 export default {
   name: "Counter",
-  data() {
-    return {
-      counter: 0
-    };
-  },
   props: {
-    id: Number
+    id: String,
+    counter: Number
   },
   methods: {
-    increment() {
-      this.counter++;
-    },
     decrement() {
       if (this.counter === 1) return false;
-
-      this.counter--;
+      this.$store.dispatch({
+        type: "decrementProductCart",
+        id: this.id,
+        quantity: 1
+      });
+    },
+    increment() {
+      this.$store.dispatch({
+        type: "incrementProductCart",
+        id: this.id,
+        quantity: 1
+      });
     }
   }
 };
