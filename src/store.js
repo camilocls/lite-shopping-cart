@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+const locaStorageProducts = JSON.parse(localStorage.getItem("shoppingCart"));
 
 Vue.use(Vuex);
 
@@ -7,7 +8,7 @@ export default new Vuex.Store({
   state: {
     categories: [],
     products: [],
-    productsInCart: [],
+    productsInCart: locaStorageProducts || [],
     currentCategorie: null
   },
   mutations: {
@@ -30,10 +31,15 @@ export default new Vuex.Store({
     ADD_PRODUCT_CART(state, id) {
       state.productsInCart.push({ id, quantity: 1 });
     },
-    DECREMENT_STOCK(state, id) {
+    DECREMENT_ITEM_STOCK(state, id) {
       const product = state.products.find(item => item.id === id);
       if (product.quantity < 1) return false;
       product.quantity--;
+    },
+    INCREMENT_ITEM_STOCK(state, id) {
+      const product = state.products.find(item => item.id === id);
+      if (product.quantity < 1) return false;
+      product.quantity++;
     }
   },
   actions: {
@@ -80,10 +86,13 @@ export default new Vuex.Store({
         type: "saveShoppingCartOnClient",
         products: state.productsInCart
       });
-      commit("DECREMENT_STOCK", id);
+      commit("DECREMENT_ITEM_STOCK", id);
     },
     saveShoppingCartOnClient(storage, { products }) {
       localStorage.setItem("shoppingCart", JSON.stringify(products));
+    },
+    deleteProduct({ commit }, { id }) {
+      commit, id;
     }
   },
   getters: {
@@ -91,6 +100,23 @@ export default new Vuex.Store({
       return state.products.filter(
         product => product.sublevel_id === categorieId
       );
+    },
+    productsInCart: state => {
+      if (!state.products.length || !state.productsInCart.length) return false;
+
+      return state.productsInCart.map(productCart => {
+        const product = state.products.find(
+          product => product.id === productCart.id
+        );
+
+        return {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          quantity: productCart.quantity,
+          image: product.image
+        };
+      });
     }
   }
 });
