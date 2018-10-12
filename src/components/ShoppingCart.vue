@@ -3,9 +3,9 @@
     <h2 class="shopping-cart__title">Shopping Cart</h2>
     <div class="items">
       <ProductCart
-        v-for="product in products"
+        v-for="product in getProductsInCart"
         :key="product.id"
-        v-bind="product"
+        :product="product"
       />
     </div>
   </div>
@@ -13,17 +13,16 @@
 
 <script>
 import ProductCart from "./ProductCart.vue";
-const locaStorageProducts = JSON.parse(localStorage.getItem("shoppingCart"));
 
 export default {
   name: "ShoppingCart",
-  data() {
-    return {
-      products: locaStorageProducts
-    };
-  },
   components: {
     ProductCart
+  },
+  computed: {
+    getProductsInCart() {
+      return this.$store.getters.productsInCart;
+    }
   }
 };
 </script>
