@@ -45,6 +45,11 @@ export default {
   border-radius: 4px;
   padding: 10px;
   font-size: 12px;
+  animation-name: productIn;
+  animation-delay: 0.1s;
+  animation-duration: 0.3s;
+  animation-fill-mode: backwards;
+  animation-timing-function: ease-out;
 }
 .product-cart__image {
   width: 50px;
@@ -83,5 +88,17 @@ export default {
   justify-content: center;
   align-items: center;
   margin-left: auto;
+}
+
+@keyframes productIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>
