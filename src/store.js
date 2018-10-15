@@ -8,6 +8,7 @@ export default new Vuex.Store({
     categories: [],
     products: [],
     productsInCart: [],
+    filterBy: null,
     checkout: false,
     currentCategorie: null
   },
@@ -46,6 +47,9 @@ export default new Vuex.Store({
     },
     SET_CHECKOUT(state, checkout) {
       state.checkout = checkout;
+    },
+    SET_FILTER(state, { filter }) {
+      state.filterBy = filter;
     }
   },
   actions: {
@@ -81,7 +85,7 @@ export default new Vuex.Store({
           });
       });
     },
-    setProductsIncartLocalStorage({ state, commit }) {
+    setProductsIncart({ state, commit }) {
       const localProducts = localStorage.getItem("shoppingCart")
         ? JSON.parse(localStorage.getItem("shoppingCart"))
         : [];
@@ -151,10 +155,34 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    productsByCategorie: state => categorieId => {
-      return state.products.filter(
-        product => product.sublevel_id === categorieId
-      );
+    getProducts: state => {
+      let products = state.products;
+
+      if (state.currentCategorie) {
+        products = products.filter(
+          product => product.sublevel_id === state.currentCategorie
+        );
+      }
+
+      if (!state.filterBy) return products;
+
+      if (state.filterBy === "priceLowHigh") {
+        products.sort((a, b) => a.price - b.price);
+      }
+
+      if (state.filterBy === "priceHighLow") {
+        products.sort((a, b) => b.price - a.price);
+      }
+
+      if (state.filterBy === "quantity") {
+        products.sort((a, b) => b.quantity - a.quantity);
+      }
+
+      if (state.filterBy === "available") {
+        products = products.filter(product => product.available === true);
+      }
+
+      return products;
     },
     productsInCart: state => {
       return state.productsInCart.map(productCart => {
