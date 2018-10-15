@@ -2,11 +2,11 @@
   <div id="app">
     <div class="container">
       <div class="side-left box-shadow">
-        <div class="container-filters">
-          <Categories :categories="categories" />
+        <Categories :categories="categories" />
+        <div class="container-products">
           <FilterProducts />
+          <ProductList :products="getProducts" />
         </div>
-        <ProductList :products="getProducts" />
       </div>
       <div class="side-right box-shadow">
         <Header/>
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import Header from "./components/Header";
 import ShoppingCart from "./components/ShoppingCart";
 import ProductList from "./components/ProductList";
@@ -36,52 +36,59 @@ export default {
   mounted() {
     this.$store.dispatch("setCategories");
     this.$store.dispatch("setProducts").then(() => {
-      this.$store.dispatch("setProductsIncartLocalStorage");
+      this.$store.dispatch("setProductsIncart");
     });
   },
   computed: {
-    ...mapState(["categories", "currentCategorie"]),
-    getProducts() {
-      if (this.currentCategorie) {
-        return this.$store.getters.productsByCategorie(this.currentCategorie);
-      } else {
-        return this.$store.state.products;
-      }
-    }
+    ...mapState(["categories"]),
+    ...mapGetters(["getProducts"])
   }
 };
 </script>
 
 <style scoped>
-.container {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-.side-right {
-  flex: 0 0 30%;
-}
 .side-left {
+  margin-bottom: 30px;
   flex: 0 0 68%;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   flex-flow: row wrap;
 }
-.container-filters {
-  flex: 0 0 30%;
+.categories {
+  width: 100%;
 }
-.product-list {
-  flex: 0 0 67%;
+.container-products {
+  width: 100%;
 }
 .filter {
-  width: 100%;
-  flex: 1 0 100%;
-  margin: 0 0 40px;
+  margin: 0 0 20px;
 }
 .box-shadow {
   box-shadow: 0 2px 14px 1px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   padding: 30px;
+}
+@media (min-width: 992px) {
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .side-right {
+    flex: 0 0 30%;
+  }
+  .side-left {
+    flex: 0 0 68%;
+    margin: 0;
+  }
+}
+@media (min-width: 768px) {
+  .categories {
+    flex: 0 0 30%;
+  }
+  .container-products {
+    flex: 0 0 67%;
+  }
 }
 </style>
