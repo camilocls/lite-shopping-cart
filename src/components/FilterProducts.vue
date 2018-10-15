@@ -19,7 +19,7 @@ export default {
     return {
       filter: "",
       options: [
-        { label: "Select a option", value: "" },
+        { label: "Select an option", value: "" },
         { label: "Price: Low to High", value: "priceLowHigh" },
         { label: "Price: High to Low", value: "priceHighLow" },
         { label: "Quantity", value: "quantity" },
