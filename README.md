@@ -29,6 +29,4 @@ yarn run lint
 
 ### TODOS:
 - Tests
-- Add Filter component
-- Add documentation
 - Add some animations
