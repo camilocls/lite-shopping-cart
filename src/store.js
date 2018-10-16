@@ -10,7 +10,7 @@ export default new Vuex.Store({
     productsInCart: [],
     filterBy: null,
     checkout: false,
-    currentCategorie: null
+    currentCategory: null
   },
   mutations: {
     SET_PRODUCTS(state, products) {
@@ -19,8 +19,8 @@ export default new Vuex.Store({
     SET_CATEGORIES(state, categories) {
       state.categories = categories;
     },
-    SET_CURRENT_CATEGORIE(state, id) {
-      state.currentCategorie = id;
+    SET_CURRENT_CATEGORY(state, id) {
+      state.currentCategory = id;
     },
     INCREMENT_QUANTITY_PRODUCT_CART(state, { id, quantity }) {
       const product = state.productsInCart.find(item => item.id === id);
@@ -102,8 +102,8 @@ export default new Vuex.Store({
       });
       commit("SET_PRODUCTS_IN_CAR", localProducts);
     },
-    setCategorie({ commit }, categorie) {
-      commit("SET_CURRENT_CATEGORIE", categorie.id);
+    setCurrentCategory({ commit }, category) {
+      commit("SET_CURRENT_CATEGORY", category.id);
     },
     addProductCart({ state, commit, dispatch }, { id }) {
       const productInCart = state.productsInCart.find(
@@ -158,9 +158,9 @@ export default new Vuex.Store({
     getProducts: state => {
       let products = state.products;
 
-      if (state.currentCategorie) {
+      if (state.currentCategory) {
         products = products.filter(
-          product => product.sublevel_id === state.currentCategorie
+          product => product.sublevel_id === state.currentCategory
         );
       }
 
