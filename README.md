@@ -1,4 +1,5 @@
 # Lite Shopping
+> Shopping cart with Vue.js and Vuex. 
 
 ![alt text](screenshot.png)
 
