@@ -1,7 +1,7 @@
 <template>
   <header class="container header">
     <div class="header__logo">
-      <img class="header__logo-image" alt="Lite Ecommerce" src="../assets/logo.png">
+      <img class="header__logo-img" alt="Lite Ecommerce" src="../assets/logo.png">
     </div>
   </header>
 </template>

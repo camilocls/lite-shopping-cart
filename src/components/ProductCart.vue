@@ -1,7 +1,7 @@
 <template>
   <div class="product-cart">
     <div class="product-cart__image">
-      <img :src="product.image">
+      <img class="product-cart__image-img" :src="product.image">
     </div>
     <div class="product-cart__details">
       <h3 class="product-cart__title">{{product.name}}</h3>
@@ -55,7 +55,7 @@ export default {
   width: 50px;
   flex: 0 0 50px;
 }
-.product-cart__image img {
+.product-cart__image-img {
   border-radius: 4px;
 }
 .product-cart__details {
