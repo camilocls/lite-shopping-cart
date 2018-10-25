@@ -1,6 +1,6 @@
 <template>
   <div class="product">
-    <div class="product__wrapper-image">
+    <div class="product__image">
       <img class="product__image-img" :src="product.image">
       <div v-if="!product.available" class="product__sold-out product__detail">Sold Out</div>
     </div>
