@@ -5,7 +5,7 @@
         <Categories :categories="categories" />
         <div class="container-products">
           <FilterProducts />
-          <ProductList :products="getProducts" />
+          <ProductList :products="getFilterProducts" />
         </div>
       </div>
       <div class="side-right box-shadow">
@@ -41,7 +41,7 @@ export default {
   },
   computed: {
     ...mapState(["categories"]),
-    ...mapGetters(["getProducts"])
+    ...mapGetters(["getFilterProducts"])
   }
 };
 </script>

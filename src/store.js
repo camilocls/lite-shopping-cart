@@ -164,6 +164,11 @@ export default new Vuex.Store({
         );
       }
 
+      return products;
+    },
+    getFilterProducts: (state, getters) => {
+      let products = getters.getProducts;
+
       if (!state.filterBy) return products;
 
       if (state.filterBy === "priceLowHigh") {
