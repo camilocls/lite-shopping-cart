@@ -1,13 +1,15 @@
 <template>
   <div class="product">
-    <div class="product__image">
-      <img :src="product.image">
+    <div class="product__wrapper-image">
+      <img class="product__image-img" :src="product.image">
       <div v-if="!product.available" class="product__sold-out product__detail">Sold Out</div>
     </div>
     <div class="product__details">
       <h3 class="product__title product__detail">{{product.name}}</h3>
       <div class="product__price product__detail">${{product.price|setCurrency}}</div>
-      <div class="product__quantity product__detail"><span>Stock:</span> {{product.quantity}}</div>
+      <div class="product__quantity product__detail">
+        <span class="product__quantity-label">Stock:</span> {{product.quantity}}
+      </div>
 
       <div class="product__actions">
         <button v-if="product.available" @click="addProduct(product.id)" class="product__btn">
@@ -51,7 +53,7 @@ export default {
   overflow: hidden;
   position: relative;
 }
-.product__image img {
+.product__image-img {
   width: 100%;
 }
 .product__title {
@@ -59,7 +61,7 @@ export default {
   font-size: 18px;
   word-break: break-all;
 }
-.product__quantity span {
+.product__quantity-label {
   font-weight: 700;
 }
 .product__detail {
@@ -69,13 +71,14 @@ export default {
   background-color: #f94a4a;
   border-radius: 4px;
   line-height: 1;
-  padding: 4px;
+  padding: 5px 12px;
   color: #fff;
   font-size: 12px;
   display: inline-block;
   position: absolute;
   right: 10px;
   top: 10px;
+  user-select: none;
 }
 .product__actions {
   margin-top: 30px;

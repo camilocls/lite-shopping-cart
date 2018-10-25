@@ -1,7 +1,7 @@
 <template>
   <div class="filter">
     <h3>Order by:</h3>
-    <select v-model="filter" @change="filterProducts" class="field__select" id="field-price">
+    <select v-model="filter" @change="filterProducts" class="filter__field-select" id="field-price">
       <option
         v-for="(option, index) in options"
         :key="index"
@@ -46,7 +46,7 @@ export default {
   display: flex;
   align-items: center;
 }
-.field__select {
+.filter__field-select {
   border: 0;
   background-color: #eee;
   border-radius: 4px;
