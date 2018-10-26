@@ -8,7 +8,7 @@
           <ProductList :products="getFilterProducts" />
         </div>
       </div>
-      <div class="side-right box-shadow">
+      <div class="side-right">
         <Header/>
         <ShoppingCart />
       </div>
@@ -47,6 +47,11 @@ export default {
 </script>
 
 <style scoped>
+.side-right,
+.side-left {
+  padding: 30px;
+  border-radius: 4px;
+}
 .side-left {
   margin-bottom: 30px;
   flex: 0 0 68%;
@@ -54,6 +59,9 @@ export default {
   justify-content: space-between;
   align-items: flex-start;
   flex-flow: row wrap;
+}
+.side-right {
+  background-color: #f3f3f3;
 }
 .categories {
   width: 100%;
@@ -65,9 +73,7 @@ export default {
   margin: 0 0 20px;
 }
 .box-shadow {
-  box-shadow: 0 2px 14px 1px rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
-  padding: 30px;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.05);
 }
 @media (min-width: 992px) {
   .container {

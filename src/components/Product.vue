@@ -13,8 +13,8 @@
 
       <div class="product__actions">
         <button v-if="product.available" @click="addProduct(product.id)" class="product__btn">
-          <span class="product__btn-add">+</span>
           <span class="product__btn-label">Add</span>
+          <span class="product__btn-add">+</span>
         </button>
       </div>
     </div>
@@ -42,19 +42,21 @@ export default {
 <style scoped>
 .product {
   margin-bottom: 40px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  box-shadow: 0 4px 14px -1px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+}
+.product:hover {
+  box-shadow: 0 4px 14px -1px rgba(0, 0, 0, 0.1);
 }
 .product__details {
   padding: 20px;
 }
 .product__image {
-  border-radius: 4px 4px 0 0;
-  overflow: hidden;
   position: relative;
 }
 .product__image-img {
   width: 100%;
+  display: block;
 }
 .product__title {
   margin: 0 0 6px;
@@ -103,7 +105,7 @@ export default {
 .product__btn-add {
   line-height: 1;
   font-size: 24px;
-  margin-right: 10px;
+  margin-left: 10px;
   font-style: normal;
 }
 </style>

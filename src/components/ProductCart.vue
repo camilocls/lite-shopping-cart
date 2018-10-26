@@ -41,7 +41,7 @@ export default {
 .product-cart {
   display: flex;
   margin: 0 0 20px;
-  border: 1px solid #eee;
+  border: 1px solid #d8d8d8;
   border-radius: 4px;
   padding: 10px;
   font-size: 12px;
@@ -72,16 +72,18 @@ export default {
 }
 .product-cart__delete {
   border: 0;
-  padding: 5px 8px;
+  margin: 10px 0 0;
+  padding: 0;
   line-height: 1;
-  color: #fff;
+  color: #555;
   border-radius: 5px;
   cursor: pointer;
-  background-color: #ec4848;
+  font-weight: 500;
+  background-color: transparent;
   transition: background-color ease 0.3s;
 }
 .product-cart__delete:hover {
-  background-color: #ff0000;
+  font-weight: 700;
 }
 .product-cart__amount {
   display: flex;
