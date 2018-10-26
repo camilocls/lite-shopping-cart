@@ -2,11 +2,13 @@
   <div class="shopping-cart">
     <h2 class="shopping-cart__title">Shopping Cart</h2>
     <div class="items">
-      <ProductCart
-        v-for="product in productsInCart"
-        :key="product.id"
-        :product="product"
-      />
+      <transition-group name="slide-fade" >
+        <ProductCart
+          :product="product"
+          v-for="product in productsInCart"
+          :key="product.id"
+        />
+      </transition-group>
     </div>
     <div class="shopping-cart__total">
       Total: <strong>${{totalPriceCart|setCurrency}}</strong>
@@ -72,5 +74,14 @@ export default {
 }
 .shopping-cart__checkout-success {
   font-size: 24px;
+}
+.slide-fade-leave-active,
+.slide-fade-enter-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-enter,
+.slide-fade-leave-to {
+  transform: translateX(10px);
+  opacity: 0;
 }
 </style>
