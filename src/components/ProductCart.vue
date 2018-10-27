@@ -41,7 +41,8 @@ export default {
 .product-cart {
   display: flex;
   margin: 0 0 20px;
-  border: 1px solid #d8d8d8;
+  border: 1px solid #e6e5e5;
+  background-color: #fff;
   border-radius: 4px;
   padding: 10px;
   font-size: 12px;
