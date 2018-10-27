@@ -171,21 +171,15 @@ export default new Vuex.Store({
 
       if (!state.filterBy) return products;
 
-      if (state.filterBy === "priceLowHigh") {
-        products.sort((a, b) => a.price - b.price);
-      }
+      const filters = {
+        available: () =>
+          (products = products.filter(product => product.available === true)),
+        quantity: () => products.sort((a, b) => b.quantity - a.quantity),
+        priceLowHigh: () => products.sort((a, b) => a.price - b.price),
+        priceHighLow: () => products.sort((a, b) => b.price - a.price)
+      };
 
-      if (state.filterBy === "priceHighLow") {
-        products.sort((a, b) => b.price - a.price);
-      }
-
-      if (state.filterBy === "quantity") {
-        products.sort((a, b) => b.quantity - a.quantity);
-      }
-
-      if (state.filterBy === "available") {
-        products = products.filter(product => product.available === true);
-      }
+      filters[state.filterBy]();
 
       return products;
     },
