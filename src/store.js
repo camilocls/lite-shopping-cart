@@ -10,7 +10,7 @@ export default new Vuex.Store({
     productsInCart: [],
     filterBy: null,
     checkout: false,
-    currentCategory: null
+    currentCategory: 15
   },
   mutations: {
     SET_PRODUCTS(state, products) {
@@ -167,7 +167,7 @@ export default new Vuex.Store({
       return products;
     },
     getFilterProducts: (state, getters) => {
-      let products = getters.getProducts;
+      let products = [...getters.getProducts];
 
       if (!state.filterBy) return products;
 
