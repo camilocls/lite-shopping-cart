@@ -1,28 +1,27 @@
 <template>
-  <div class="tree-category" v-bind:class="{ 'tree-category__sub-level': isSubLevel }">
+  <div class="tree-category" v-bind:class="{ 'tree-category__opened': open }">
     <div
       class="tree-category__head"
       @click="toggleTree"
-      :class="{ 'tree-category__head--active': open }"
+      :class="{ 'tree-category__head--active': active === level.id || open }"
     >
-      <h3 @click="setCategory(id)" :class="[{'tree-category__active': activeItem === id, }, 'tree-category__title']">{{label}}</h3>
+      <h3 @click="setCategory(level.id)" class="tree-category__title">{{level.name}}</h3>
       <button
         v-if="levels && levels.length"
         :class="{ 'tree-category__toggle--open': open }"
         class="tree-category__toggle">
-          <i class="tree-category__toggle__icon tree-category__toggle__plus">+</i>
-          <i class="tree-category__toggle__icon tree-category__toggle__minus">-</i>
+          <i class="tree-category__toggle-icon tree-category__toggle-plus">+</i>
+          <i class="tree-category__toggle-icon tree-category__toggle-minus">-</i>
       </button>
     </div>
-    <div v-if="levels" v-bind:class="{ 'tree-category__hide': !open }">
-      <TreeCategory
+    <div v-if="levels" class="tree-category__sub-items" v-bind:class="{ 'tree-category__hide': !open }">
+      <TreeItem
+        @set-active-item="setActiveItem"
         v-for="level in levels"
         :key="level.id"
-        :id="level.id"
-        :activeItem="id"
-        :isSubLevel="true"
+        :active="active"
+        :level="level"
         :levels="level.sublevels"
-        :label="level.name"
       />
     </div>
   </div>
@@ -30,18 +29,16 @@
 
 <script>
 export default {
-  name: "TreeCategory",
+  name: "TreeItem",
   data() {
     return {
       open: false
     };
   },
   props: {
-    id: Number,
-    label: String,
-    isSubLevel: Boolean,
+    level: Object,
     levels: Array,
-    activeItem: Number
+    active: Number
   },
   methods: {
     setCategory(id) {
@@ -50,7 +47,12 @@ export default {
         id: id
       });
     },
+    setActiveItem: function(id) {
+      this.$emit("set-active-item", id);
+    },
     toggleTree() {
+      this.$emit("set-active-item", this.level.id);
+      if (!this.levels) return false;
       this.open = !this.open;
     }
   }
@@ -59,8 +61,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.tree-category:not(.tree-category__sub-level) {
-  padding: 10px 0;
+.tree-category {
+  padding: 0 0 10px;
 }
 .tree-category:not(:last-child) {
   border-bottom: 1px solid #ddd;
@@ -68,13 +70,14 @@ export default {
 .tree-category__hide {
   display: none;
 }
-.tree-category__sub-level {
+.tree-category__sub-items {
   padding-left: 15px;
 }
 .tree-category__head {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-top: 10px;
 }
 .tree-category__title {
   font-size: 16px;
@@ -93,17 +96,17 @@ export default {
   cursor: pointer;
   line-height: 0;
 }
-.tree-category__toggle__icon {
+.tree-category__toggle-icon {
   font-size: 20px;
   font-style: normal;
 }
-.tree-category__toggle__minus {
+.tree-category__toggle-minus {
   display: none;
 }
-.tree-category__toggle--open .tree-category__toggle__plus {
+.tree-category__toggle--open .tree-category__toggle-plus {
   display: none;
 }
-.tree-category__toggle--open .tree-category__toggle__minus {
+.tree-category__toggle--open .tree-category__toggle-minus {
   display: block;
 }
 </style>
