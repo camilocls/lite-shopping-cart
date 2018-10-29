@@ -15,7 +15,7 @@
       </button>
     </div>
     <div v-if="levels" class="tree-category__sub-items" v-bind:class="{ 'tree-category__hide': !open }">
-      <TreeItem
+      <TreeCategory
         @set-active-item="setActiveItem"
         v-for="level in levels"
         :key="level.id"
@@ -29,7 +29,7 @@
 
 <script>
 export default {
-  name: "TreeItem",
+  name: "TreeCategory",
   data() {
     return {
       open: false
