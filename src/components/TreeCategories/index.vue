@@ -1,6 +1,6 @@
 <template>
-  <div class="tree-list">
-    <TreeItem
+  <div class="tree-categories">
+    <TreeCategory
       @set-active-item="setActiveItem"
       v-for="category in categories"
       :key="category.id"
@@ -12,10 +12,10 @@
 </template>
 
 <script>
-import TreeItem from "./TreeItem.vue";
+import TreeCategory from "./TreeCategory.vue";
 
 export default {
-  name: "TreeCategory",
+  name: "TreeCategories",
   data() {
     return {
       activeItem: 0
@@ -25,7 +25,7 @@ export default {
     categories: Array
   },
   components: {
-    TreeItem
+    TreeCategory
   },
   methods: {
     setActiveItem: function(id) {

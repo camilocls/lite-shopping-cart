@@ -1,11 +1,11 @@
 <template>
   <div class="categories">
-    <TreeCategory :categories="categories" />
+    <TreeCategories :categories="categories" />
   </div>
 </template>
 
 <script>
-import TreeCategory from "./TreeCategory/index.vue";
+import TreeCategories from "./TreeCategories/index.vue";
 
 export default {
   name: "Categories",
@@ -13,7 +13,7 @@ export default {
     categories: Array
   },
   components: {
-    TreeCategory
+    TreeCategories
   }
 };
 </script>
