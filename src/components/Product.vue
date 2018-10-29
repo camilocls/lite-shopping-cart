@@ -11,8 +11,8 @@
         <span class="product__quantity-label">Stock:</span> {{product.quantity}}
       </div>
 
-      <div class="product__actions">
-        <button v-if="product.available" @click="addProduct(product.id)" class="product__btn">
+      <div v-if="product.available" class="product__actions">
+        <button @click="addProduct(product.id)" class="product__btn">
           <span class="product__btn-label">Add</span>
           <span class="product__btn-add">+</span>
         </button>
@@ -50,9 +50,12 @@ export default {
 }
 .product__details {
   padding: 20px;
+  font-size: 16px;
 }
 .product__image {
   position: relative;
+  border-radius: 6px 6px 0 0;
+  overflow: hidden;
 }
 .product__image-img {
   width: 100%;
@@ -60,14 +63,15 @@ export default {
 }
 .product__title {
   margin: 0 0 6px;
-  font-size: 18px;
   word-break: break-all;
+  text-transform: capitalize;
 }
 .product__quantity-label {
   font-weight: 700;
 }
 .product__detail {
   margin-bottom: 6px;
+  text-align: center;
 }
 .product__sold-out {
   background-color: #f94a4a;
@@ -83,29 +87,35 @@ export default {
   user-select: none;
 }
 .product__actions {
-  margin-top: 30px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
 }
 .product__btn {
   border: 0;
-  background-color: #ec701c;
-  border-radius: 4px;
+  border-radius: 50px;
   line-height: 1;
-  padding: 5px 14px;
+  width: 80%;
+  padding: 8px 14px;
   color: #fff;
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 700;
   display: inline-block;
   display: flex;
   align-items: center;
+  justify-content: center;
   cursor: pointer;
   transition: background-color ease 0.3s;
+  background: rgb(19, 126, 208);
 }
 .product__btn:hover {
-  background-color: #f79e03;
+  background: rgba(85, 88, 218, 1);
 }
 .product__btn-add {
   line-height: 1;
-  font-size: 24px;
+  font-size: 20px;
   margin-left: 10px;
   font-style: normal;
+  font-weight: 300;
 }
 </style>
