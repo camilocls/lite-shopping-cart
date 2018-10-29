@@ -10,7 +10,7 @@ export default new Vuex.Store({
     productsInCart: [],
     filterBy: null,
     checkout: false,
-    currentCategory: 15
+    currentCategory: null
   },
   mutations: {
     SET_PRODUCTS(state, products) {
