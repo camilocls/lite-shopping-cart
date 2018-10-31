@@ -1,11 +1,17 @@
 <template>
   <div class="categories">
-    <TreeCategories :categories="categories" />
+    <TreeCategory
+      v-for="category in categories"
+      :key="category.id"
+      :id="category.id"
+      :levels="category.sublevels"
+      :label="category.name"
+    />
   </div>
 </template>
 
 <script>
-import TreeCategories from "./TreeCategories/index.vue";
+import TreeCategory from "./TreeCategory.vue";
 
 export default {
   name: "Categories",
@@ -13,7 +19,7 @@ export default {
     categories: Array
   },
   components: {
-    TreeCategories
+    TreeCategory
   }
 };
 </script>
